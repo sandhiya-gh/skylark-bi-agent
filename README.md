@@ -1,90 +1,125 @@
 # 🚁 Skylark BI Copilot
 
-An AI-powered Business Intelligence Agent that answers founder-level
-questions using live data from monday.com Deals and Work Orders boards.
+### AI-Powered Business Intelligence Agent for Monday.com
 
-## Problem
+Skylark BI Copilot is a conversational decision-intelligence application built for founders and business leaders who need fast, reliable answers from operational business data.
 
-Business leaders often need answers that require combining sales,
-pipeline, project execution, billing and collection information.
+It connects directly to Monday.com and analyzes two live business boards:
 
-The source data is operational and can contain missing values,
-inconsistent naming and incomplete records.
+- **Deals** — sales pipeline and commercial information
+- **Work Orders** — project execution, billing, collections and operational information
 
-## Solution
+Instead of requiring a user to manually extract, clean and analyze data, Skylark converts natural-language business questions into deterministic analytics and executive-level insights.
 
-Skylark BI Copilot connects directly to monday.com using its GraphQL API.
+---
 
-The system:
+## 🎯 Problem
 
-1. Retrieves live Deals and Work Orders data.
-2. Normalizes inconsistent fields.
-3. Detects missing and incomplete data.
-4. Performs deterministic BI calculations.
-5. Uses an LLM to interpret questions and communicate insights.
-6. Provides founder-level recommendations.
-7. Supports cross-board analysis.
-8. Generates leadership updates.
+Business leaders often need answers that span multiple operational systems.
 
-## Architecture
+A question such as:
 
-Founder
-↓
-Streamlit Conversational UI
-↓
-AI Query Planner
-↓
-BI Analytics Engine
-↓
-Monday.com GraphQL API
-↓
-Deals + Work Orders Boards
+> "How is our Energy pipeline looking this quarter?"
 
-## Key Design Principle
+may require someone to:
 
-The LLM does not perform financial calculations.
+1. Retrieve the latest data from Monday.com
+2. Identify the relevant sector
+3. Filter the appropriate records
+4. Handle missing values and inconsistent formats
+5. Calculate pipeline metrics
+6. Interpret the result
+7. Communicate the business implication
 
-Python performs numerical operations such as:
+This becomes increasingly difficult when operational data is incomplete or inconsistent.
 
-- Pipeline aggregation
-- Weighted pipeline
-- Sector aggregation
-- Billing backlog
-- Receivables
-- Operational metrics
+Skylark automates this workflow.
 
-The LLM is responsible for intent understanding and executive
-communication.
+---
 
-## Data Resilience
+# 💡 Solution
 
-The application:
+Skylark acts as a conversational BI layer over Monday.com.
 
-- Handles missing values.
-- Normalizes sectors.
-- Normalizes dates.
-- Normalizes financial values.
-- Handles missing closure probabilities.
-- Surfaces data-quality warnings.
-- Handles Monday.com API failures gracefully.
+A founder can ask questions such as:
 
-## Supported Questions
+- "How is our pipeline looking overall?"
+- "How is the Energy pipeline?"
+- "Which sectors have the strongest pipeline?"
+- "Which stages contain the most pipeline?"
+- "How much is currently receivable?"
+- "How much is still to be billed?"
+- "Compare sales pipeline with execution."
+- "Where is our biggest business risk?"
+- "Which sectors need leadership attention?"
+- "Prepare a leadership update."
+- "What data quality issues should I know about?"
 
-Examples:
+The system retrieves the current Monday.com data, applies deterministic analytics, and converts the results into concise executive insights.
 
-- What's our pipeline looking like this quarter?
-- How is the Energy pipeline?
-- Which sectors have the strongest pipeline?
-- Which stages contain the most pipeline?
-- How much is still to be billed?
-- What are our receivables?
-- Compare sales pipeline with execution.
-- Prepare a leadership update.
-- What data quality issues should I know about?
+---
 
-## Setup
+# 🏗️ Architecture
 
-### 1. Install dependencies
-
-```bash
-pip install -r requirements.txt
+```text
+                         ┌───────────────────────┐
+                         │       Founder         │
+                         │ Natural-language      │
+                         │      question         │
+                         └───────────┬───────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │    Streamlit UI       │
+                         │  Conversational BI    │
+                         └───────────┬───────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │   Query Understanding │
+                         │ Intent / sector /     │
+                         │ period identification │
+                         └───────────┬───────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │ Deterministic BI      │
+                         │ Analytics Engine      │
+                         │                       │
+                         │ • Pipeline            │
+                         │ • Sectors             │
+                         │ • Stages              │
+                         │ • Operations          │
+                         │ • Finance             │
+                         │ • Cross-board         │
+                         │ • Data quality        │
+                         └───────────┬───────────┘
+                                     │
+                          ┌──────────┴──────────┐
+                          ▼                     ▼
+                ┌─────────────────┐   ┌─────────────────┐
+                │ Monday.com      │   │ Data Quality    │
+                │ GraphQL API     │   │ / Normalization │
+                └────────┬────────┘   └─────────────────┘
+                         │
+                ┌────────┴────────┐
+                ▼                 ▼
+        ┌──────────────┐  ┌────────────────┐
+        │ Deals Board  │  │ Work Orders    │
+        │              │  │ Board          │
+        └──────────────┘  └────────────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │ Gemini Explanation    │
+                         │                       │
+                         │ Executive context     │
+                         │ + implications        │
+                         │ + recommendations     │
+                         └───────────┬───────────┘
+                                     │
+                                     ▼
+                         ┌───────────────────────┐
+                         │ Executive Answer      │
+                         │ + evidence / caveats  │
+                         └───────────────────────┘
